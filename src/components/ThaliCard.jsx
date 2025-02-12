@@ -17,25 +17,25 @@ const ThaliCard = ({ thali }) => {
         <Text style={styles.price}>₹{thali.price}</Text>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity 
-            onPress={() => dispatch(addToCart(thali))} 
-            style={styles.addButton}
-          >
-            <Text style={styles.buttonText}>{quantity > 0 ? "+" : "Add"}</Text>
-          </TouchableOpacity>
-
           {quantity > 0 && (
             <>
-              <Text style={styles.quantityText}>{quantity}</Text>
-
               <TouchableOpacity 
                 onPress={() => dispatch(removeFromCart({ id: thali.id }))} 
                 style={styles.removeButton}
               >
                 <Text style={styles.buttonText}>-</Text>
               </TouchableOpacity>
+
+              <Text style={styles.quantityText}>{quantity}</Text>
             </>
           )}
+
+          <TouchableOpacity 
+            onPress={() => dispatch(addToCart(thali))} 
+            style={styles.addButton}
+          >
+            <Text style={styles.buttonText}>{quantity > 0 ? "+" : "Add"}</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#28a745",
     padding: 8,
     borderRadius: 5,
-    marginRight: 10,
+    marginLeft: 10, 
     minWidth: 50,
     alignItems: "center",
   },
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#dc3545",
     padding: 8,
     borderRadius: 5,
-    marginLeft: 10,
+    marginRight: 10, 
     minWidth: 50,
     alignItems: "center",
   },

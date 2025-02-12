@@ -13,26 +13,36 @@ const CartScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Your Cart</Text>
+      <Text style={styles.title}> Your Cart</Text>
 
       {cartItems.length === 0 ? (
         <Text style={styles.emptyCartText}>Your cart is empty.</Text>
       ) : (
-        <FlatList
-          data={cartItems}
-          keyExtractor={item => (item?.id ? item.id.toString() : Math.random().toString())}
-          renderItem={({ item }) =>
-            item && item.name ? (
-              <View style={styles.cartItem}>
-                <View>
-                  <Text style={styles.itemName}>{item.name}</Text>
-                  <Text style={styles.itemPrice}>₹{item.price} x {item.quantity}</Text>
+        <View style={styles.tableContainer}>
+         
+          <View style={styles.tableHeader}>
+            <Text style={[styles.headerText, { flex: 2 }]}>Item</Text>
+            <Text style={styles.headerText}>Price</Text>
+            <Text style={styles.headerText}>Qty</Text>
+            <Text style={[styles.headerText, { flex: 1.5 }]}>Total</Text>
+          </View>
+
+          
+          <FlatList
+            data={cartItems}
+            keyExtractor={item => (item?.id ? item.id.toString() : Math.random().toString())}
+            renderItem={({ item }) =>
+              item && item.name ? (
+                <View style={styles.cartItem}>
+                  <Text style={[styles.itemText, { flex: 2 }]}>{item.name}</Text>
+                  <Text style={styles.itemText}>₹{item.price}</Text>
+                  <Text style={styles.itemText}>{item.quantity}</Text>
+                  <Text style={[styles.itemTotal, { flex: 1.5 }]}>₹{item.price * item.quantity}</Text>
                 </View>
-                <Text style={styles.totalItemPrice}>₹{item.price * item.quantity}</Text>
-              </View>
-            ) : null
-          }
-        />
+              ) : null
+            }
+          />
+        </View>
       )}
 
       {cartItems.length > 0 && (
@@ -56,56 +66,74 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: 'black',
+    backgroundColor: '#121212',
   },
   title: {
     fontSize: 26,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 20,
-    color: 'white',
+    color: '#f5cb5c',
   },
   emptyCartText: {
     fontSize: 18,
-    color: 'black',
+    color: '#bbb',
     textAlign: 'center',
     marginTop: 50,
+  },
+  tableContainer: {
+    marginBottom: 20,
+    backgroundColor: '#1e1e1e',
+    borderRadius: 10,
+    padding: 10,
+  },
+  tableHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#555',
+  },
+  headerText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#f5cb5c',
+    flex: 1,
+    textAlign: 'center',
   },
   cartItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#fff7db',
+    backgroundColor: '#222',
     padding: 12,
     marginVertical: 6,
     borderRadius: 8,
-    height: 60,
   },
-  itemName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  itemPrice: {
+  itemText: {
     fontSize: 16,
-    color: '#555',
+    color: '#fff',
+    flex: 1,
+    textAlign: 'center',
   },
-  totalItemPrice: {
-    fontSize: 18,
+  itemTotal: {
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#ff5733',
+    flex: 1,
+    textAlign: 'center',
   },
   totalContainer: {
     marginTop: 30,
     padding: 15,
-    backgroundColor: '#ffeb99',
+    backgroundColor: '#333',
     borderRadius: 10,
     alignItems: 'center',
   },
   totalText: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#fff',
     marginBottom: 10,
   },
   paymentButton: {

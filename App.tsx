@@ -6,6 +6,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import HomeScreen from "./src/screens/HomeScreen";
 import CartScreen from "./src/screens/CartScreen";
+import LoginScreen from "./src/screens/LoginScreen";
 
 
 const Stack = createNativeStackNavigator();
@@ -15,7 +16,8 @@ const App = () => {
     <Provider store={store}>
       <GestureHandlerRootView style = {{flex:1}}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator initialRouteName="LoginScreen">
+          <Stack.Screen name = "LoginScreen" component={LoginScreen}/>
           <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}} />
           <Stack.Screen name="CartScreen" component={CartScreen} />
         </Stack.Navigator>
