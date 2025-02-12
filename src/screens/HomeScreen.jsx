@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 import BannerImage from '../components/BannerImage';
 import ThaliCard from '../components/ThaliCard';
 import thaliData from '../Dishes';
-import ModalScreen from '../components/ModalScreen';
+import ModalScreen from '../screens/ModalScreen';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -20,7 +20,7 @@ const HomeScreen = () => {
 
  
   const cart = useSelector((state) => state.thali?.cart || {});
-  const totalItems = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0);
+  const totalItems = Object.keys(cart).length;
   console.log(totalItems);
   
 
@@ -30,7 +30,7 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <BannerImage imageSource={require('../assets/images/banner_image.jpg')} />
+      <BannerImage imageSource={require('../assets/images/header_image.jpg')} />
       <View style={styles.headerRow}>
         <Text style={styles.featuredText}>Featured Thalis</Text>
 
@@ -72,12 +72,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 10,
-    backgroundColor: '#fff',
+    backgroundColor: 'black',
+
   },
   featuredText: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#333',
+    color: 'white',
   },
   cartContainer: {
     position: 'relative',
