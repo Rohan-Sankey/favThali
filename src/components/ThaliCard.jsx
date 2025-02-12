@@ -11,21 +11,28 @@ const ThaliCard = ({ thali }) => {
   return (
     <View style={styles.card}>
       <Image source={thali.image} style={styles.image} />
-      
+
       <View style={styles.details}>
         <Text style={styles.name}>{thali.name}</Text>
         <Text style={styles.price}>₹{thali.price}</Text>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={() => dispatch(addToCart(thali))} style={styles.addButton}>
-            <Text style={styles.buttonText}>Add</Text>
+          <TouchableOpacity 
+            onPress={() => dispatch(addToCart(thali))} 
+            style={styles.addButton}
+          >
+            <Text style={styles.buttonText}>{quantity > 0 ? "+" : "Add"}</Text>
           </TouchableOpacity>
 
           {quantity > 0 && (
             <>
               <Text style={styles.quantityText}>{quantity}</Text>
-              <TouchableOpacity onPress={() => dispatch(removeFromCart({ id: thali.id }))} style={styles.removeButton}>
-                <Text style={styles.buttonText}>Remove</Text>
+
+              <TouchableOpacity 
+                onPress={() => dispatch(removeFromCart({ id: thali.id }))} 
+                style={styles.removeButton}
+              >
+                <Text style={styles.buttonText}>-</Text>
               </TouchableOpacity>
             </>
           )}
@@ -48,8 +55,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   image: {
-    width: 160, 
-    height: 160, 
+    width: 120, 
+    height: 120, 
     borderRadius: 10, 
     resizeMode: "cover",
   },
@@ -78,21 +85,26 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 5,
     marginRight: 10,
+    minWidth: 50,
+    alignItems: "center",
   },
   removeButton: {
     backgroundColor: "#dc3545",
     padding: 8,
     borderRadius: 5,
     marginLeft: 10,
+    minWidth: 50,
+    alignItems: "center",
   },
   buttonText: {
     color: "#fff",
     fontWeight: "bold",
+    fontSize: 18,
   },
   quantityText: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
-    marginHorizontal: 5,
+    marginHorizontal: 10,
   },
 });
 

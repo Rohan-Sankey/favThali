@@ -8,8 +8,11 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import CartScreen from '../screens/CartScreen';
+import { useNavigation } from '@react-navigation/native';
 
 const CartModal = ({isVisible, onClose}) => {
+
+  const navigation = useNavigation();
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
@@ -39,14 +42,18 @@ const CartModal = ({isVisible, onClose}) => {
       style={styles.modal}>
       <View style={styles.modalContent}>
         <Text style={styles.modalTitle}>Go To Cart</Text>
-        <CartScreen />
         <TouchableOpacity style={styles.Button} onPress={onClose}>
           <Text style={styles.ButtonText}>Cancel</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.Button}>
-          onPress = {() => navigation.navigate('CartScreen')}
-          <Text style={styles.ButtonText}>Continue</Text>
-        </TouchableOpacity>
+        <TouchableOpacity 
+  style={styles.Button}
+  onPress={() => {
+    navigation.navigate('CartScreen');  
+    onClose();
+  }}>
+  <Text style={styles.ButtonText}>Continue</Text>
+</TouchableOpacity>
+
       </View>
     </Modal>
   );
