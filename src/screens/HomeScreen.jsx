@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -11,30 +11,42 @@ import {useNavigation} from '@react-navigation/native';
 import BannerImage from '../components/BannerImage';
 import ThaliCard from '../components/ThaliCard';
 import thaliData from '../Dishes';
+import CartModal from '../components/ModalScreen'; 
+import ModalScreen from '../components/ModalScreen';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
 
   return (
     <View style={styles.container}>
       <BannerImage imageSource={require('../assets/images/banner_image.jpg')} />
-
       <View style={styles.headerRow}>
         <Text style={styles.featuredText}>Featured Thalis</Text>
-        <TouchableOpacity onPress = {() => navigation.navigate('Cart')} >
-          <Image source={require('../assets/icons/menu.png')} />
+        <TouchableOpacity onPress={toggleModal}>
+          <Image
+            source={require('../assets/icons/menu.png')}
+            style={styles.cartIcon}
+          />
         </TouchableOpacity>
       </View>
-
       <FlatList
         data={thaliData}
         keyExtractor={item => item.id.toString()}
         renderItem={({item}) => <ThaliCard thali={item} />}
         contentContainerStyle={styles.listContainer}
       />
+
+      <ModalScreen isVisible={isModalVisible} onClose={toggleModal} />
     </View>
   );
 };
+
+export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -48,30 +60,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     backgroundColor: '#fff',
-    borderBottomLeftRadius: 15,
-    borderBottomRightRadius: 15,
   },
   featuredText: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#333',
   },
-  cartButton: {
-    backgroundColor: '#ff5722',
-    paddingVertical: 8,
-    paddingHorizontal: 15,
-    borderRadius: 20,
-    elevation: 2,
-  },
-  cartText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#fff',
+  cartIcon: {
+    width: 24,
+    height: 24,
   },
   listContainer: {
     paddingBottom: 20,
     paddingHorizontal: 10,
   },
 });
-
-export default HomeScreen;

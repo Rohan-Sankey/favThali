@@ -4,12 +4,12 @@ const initialState = {
   cart: {}, 
 };
 
-const thaliSlice = createSlice({
+const cartSlice = createSlice({
   name: "thali",
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      const { id, name, price } = action.payload;
+      const { id, name, price , image } = action.payload;
       if (state.cart[id]) {
         state.cart[id].quantity += 1; 
       } else {
@@ -22,12 +22,12 @@ const thaliSlice = createSlice({
         if (state.cart[id].quantity > 1) {
           state.cart[id].quantity -= 1; 
         } else {
-          delete state.cart[id]; 
+          state.cart[id] = 0; 
         }
       }
     },
   },
 });
 
-export const { addToCart, removeFromCart } = thaliSlice.actions;
-export default thaliSlice.reducer;
+export const { addToCart, removeFromCart } = cartSlice.actions;
+export default cartSlice.reducer;
