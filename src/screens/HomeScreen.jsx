@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,21 +8,28 @@ import {
   Image,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux'; 
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchDishData, loadCart } from '../redux/cartSlice';
 import BannerImage from '../components/BannerImage';
 import ThaliCard from '../components/ThaliCard';
-import thaliData from '../Dishes';
 import ModalScreen from '../screens/ModalScreen';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
   const [isModalVisible, setModalVisible] = useState(false);
+  const dispatch = useDispatch();
 
- 
-  const cart = useSelector((state) => state.thali?.cart || {});
-  const totalItems = Object.keys(cart).length;
-  console.log(totalItems);
   
+  const { cart, thaliData = [], loading, error } = useSelector((state) => state.thali);
+
+  
+  const totalItems = cart ? Object.keys(cart).length : 0;
+  console.log(totalItems);
+
+  useEffect(() => {
+    dispatch(fetchDishData()); 
+    dispatch(loadCart()); 
+  }, [dispatch]);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -47,12 +54,20 @@ const HomeScreen = () => {
         </TouchableOpacity>
       </View>
 
-      <FlatList
-        data={thaliData}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <ThaliCard thali={item} />}
-        contentContainerStyle={styles.listContainer}
-      />
+      {loading ? (
+        <Text style={styles.loadingText}>Loading...</Text>
+      ) : error ? (
+        <Text style={styles.errorText}>{error}</Text>
+      ) : thaliData.length === 0 ? (
+        <Text style={styles.errorText}>No thali data available</Text>
+      ) : (
+        <FlatList
+          data={thaliData}
+          keyExtractor={(item) => item.id?.toString() || Math.random().toString()}
+          renderItem={({ item }) => <ThaliCard thali={item} />}
+          contentContainerStyle={styles.listContainer}
+        />
+      )}
 
       <ModalScreen isVisible={isModalVisible} onClose={toggleModal} />
     </View>
@@ -73,7 +88,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     backgroundColor: 'black',
-
   },
   featuredText: {
     fontSize: 20,
@@ -108,5 +122,15 @@ const styles = StyleSheet.create({
   listContainer: {
     paddingBottom: 20,
     paddingHorizontal: 10,
+  },
+  loadingText: {
+    color: 'white',
+    textAlign: 'center',
+    marginTop: 20,
+  },
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
+    marginTop: 20,
   },
 });

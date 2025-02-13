@@ -10,7 +10,7 @@ const ThaliCard = ({ thali }) => {
 
   return (
     <View style={styles.card}>
-      <Image source={thali.image} style={styles.image} />
+      <Image source={{uri :thali.image}} style={styles.image} />
 
       <View style={styles.details}>
         <Text style={styles.name}>{thali.name}</Text>
