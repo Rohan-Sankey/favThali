@@ -1,8 +1,10 @@
 import React, { useMemo } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { useSelector } from 'react-redux';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import { clearCart } from '../redux/cartSlice'; 
 
 const CartScreen = () => {
+  const dispatch = useDispatch();
   const cart = useSelector(state => state.thali.cart) || {};
   const cartItems = Object.values(cart);
 
@@ -13,13 +15,19 @@ const CartScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}> Your Cart</Text>
+      <View style={styles.header}>
+        <Text style={styles.title}>Your Cart</Text>
+        {cartItems.length > 0 && (
+          <TouchableOpacity onPress={() => dispatch(clearCart())} style={styles.clearCartButton}>
+            <Image source={require('../assets/icons/cart.png')} style={styles.trashIcon} />
+          </TouchableOpacity>
+        )}
+      </View>
 
       {cartItems.length === 0 ? (
         <Text style={styles.emptyCartText}>Your cart is empty.</Text>
       ) : (
         <View style={styles.tableContainer}>
-         
           <View style={styles.tableHeader}>
             <Text style={[styles.headerText, { flex: 2 }]}>Item</Text>
             <Text style={styles.headerText}>Price</Text>
@@ -27,7 +35,6 @@ const CartScreen = () => {
             <Text style={[styles.headerText, { flex: 1.5 }]}>Total</Text>
           </View>
 
-          
           <FlatList
             data={cartItems}
             keyExtractor={item => (item?.id ? item.id.toString() : Math.random().toString())}
@@ -68,12 +75,26 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#121212',
   },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
   title: {
     fontSize: 26,
     fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 20,
     color: '#f5cb5c',
+  },
+  clearCartButton: {
+    padding: 8,
+    backgroundColor: '#ff3333',
+    borderRadius: 8,
+  },
+  trashIcon: {
+    width: 24,
+    height: 24,
+    tintColor: 'white',
   },
   emptyCartText: {
     fontSize: 18,
