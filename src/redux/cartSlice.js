@@ -18,6 +18,25 @@ export const loadCart = createAsyncThunk("dish/loadCart" , async ()=>{
 
 })
 
+export const uploadDish = createAsyncThunk("dish/uploadDish" , async (newDish , {rejectWithValue})=>{
+  try{
+    const response = await axios.post(URL , newDish);
+    return response.data;
+  } catch(error){
+    return rejectWithValue(error.response ? error.response.data : error.message)
+  }
+})
+
+
+export const deleteDish = createAsyncThunk("dish/deleteDish" , async (id , {rejectWithValue}) =>{
+  try{
+    await axios.delete(`${URL}/${id}`);
+    return id
+  } catch (error) {
+    return rejectWithValue(error.response ? error.response.data : error.message);
+  }
+})
+
 
 const saveCartToStorage = async (cart)=>{
   await AsyncStorage.setItem("cart" , JSON.stringify(cart));
@@ -76,7 +95,19 @@ extraReducers: (builder)=>{
 
   .addCase(loadCart.fulfilled, (state, action) => {
     state.cart = action.payload;
-  });
+  })
+
+  .addCase(uploadDish.fulfilled , (state , action)=>{
+    state.loading = false;
+    state.thaliData.push(action.payload) ;
+  })
+
+  .addCase(uploadDish.rejected , (state,action)=>{
+    state.loading = false;
+    state.error = action.payload;
+  })
+
+
 }
 
 });

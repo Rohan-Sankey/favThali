@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const LoginScreen = ({navigation}) => {
 
+  const isAdmin = false;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -12,9 +13,11 @@ const LoginScreen = ({navigation}) => {
     console.log("Password:", password);
 
     if(email ==='user@gmail.com' && password === '123'){
-        navigation.navigate('Home')
-    } else{
-        
+        navigation.navigate('Home' , {isAdmin})
+    } else if(email === 'admin@gmail.com' && password === '123'){
+        navigation.navigate('Home' , {isAdmin : true})
+    } else {
+      navigation.navigate('Home' , {isAdmin})
     }
   };
 

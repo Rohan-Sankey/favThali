@@ -7,8 +7,8 @@ import {
   Text,
   Image,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useSelector, useDispatch } from 'react-redux';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchDishData, loadCart } from '../redux/cartSlice';
 import BannerImage from '../components/BannerImage';
 import ThaliCard from '../components/ThaliCard';
@@ -16,19 +16,18 @@ import ModalScreen from '../screens/ModalScreen';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+  const isAdmin = route.params?.isAdmin || false; // Get admin flag from navigation
+
   const [isModalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
 
-  
-  const { cart, thaliData = [], loading, error } = useSelector((state) => state.thali);
-
-  
+  const { cart, thaliData = [], loading, error } = useSelector(state => state.thali);
   const totalItems = cart ? Object.keys(cart).length : 0;
-  console.log(totalItems);
 
   useEffect(() => {
-    dispatch(fetchDishData()); 
-    dispatch(loadCart()); 
+    dispatch(fetchDishData());
+    dispatch(loadCart());
   }, [dispatch]);
 
   const toggleModal = () => {
@@ -41,17 +40,20 @@ const HomeScreen = () => {
       <View style={styles.headerRow}>
         <Text style={styles.featuredText}>Featured Thalis</Text>
 
-        <TouchableOpacity onPress={toggleModal} style={styles.cartContainer}>
-          <Image
-            source={require('../assets/icons/menu.png')}
-            style={styles.cartIcon}
-          />
-          {totalItems > 0 && (
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>{totalItems}</Text>
-            </View>
-          )}
-        </TouchableOpacity>
+        {/* Hide Cart for Admin */}
+        {!isAdmin && (
+          <TouchableOpacity onPress={toggleModal} style={styles.cartContainer}>
+            <Image
+              source={require('../assets/icons/menu.png')}
+              style={styles.cartIcon}
+            />
+            {totalItems > 0 && (
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>{totalItems}</Text>
+              </View>
+            )}
+          </TouchableOpacity>
+        )}
       </View>
 
       {loading ? (
@@ -63,13 +65,23 @@ const HomeScreen = () => {
       ) : (
         <FlatList
           data={thaliData}
-          keyExtractor={(item) => item.id?.toString() || Math.random().toString()}
-          renderItem={({ item }) => <ThaliCard thali={item} />}
+          keyExtractor={item => item.id?.toString() || Math.random().toString()}
+          renderItem={({ item }) => <ThaliCard thali={item} isAdmin={isAdmin} />}
           contentContainerStyle={styles.listContainer}
         />
       )}
 
       <ModalScreen isVisible={isModalVisible} onClose={toggleModal} />
+
+      {/* Show Add Button for Admin Only */}
+      {isAdmin && (
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => navigation.navigate('uploadDish')}
+        >
+          <Text style={styles.plusText}>+</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -132,5 +144,26 @@ const styles = StyleSheet.create({
     color: 'red',
     textAlign: 'center',
     marginTop: 20,
+  },
+  addButton: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: 'red',
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  plusText: {
+    fontSize: 30,
+    color: 'white',
+    fontWeight: 'bold',
   },
 });

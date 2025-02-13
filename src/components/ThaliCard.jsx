@@ -3,21 +3,22 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, removeFromCart } from '../redux/cartSlice';
 
-const ThaliCard = ({ thali }) => {
+const ThaliCard = ({ thali, isAdmin }) => {
   const dispatch = useDispatch();
   const cart = useSelector(state => state.thali.cart);
   const quantity = cart[thali.id]?.quantity || 0;
 
   return (
     <View style={styles.card}>
-      <Image source={{uri :thali.image}} style={styles.image} />
+      <Image source={{ uri: thali.image }} style={styles.image} />
 
       <View style={styles.details}>
         <Text style={styles.name}>{thali.name}</Text>
         <Text style={styles.price}>₹{thali.price}</Text>
 
+        
         <View style={styles.buttonContainer}>
-          {quantity > 0 && (
+          {!isAdmin && quantity > 0 && (
             <>
               <TouchableOpacity 
                 onPress={() => dispatch(removeFromCart({ id: thali.id }))} 
@@ -30,12 +31,25 @@ const ThaliCard = ({ thali }) => {
             </>
           )}
 
-          <TouchableOpacity 
-            onPress={() => dispatch(addToCart(thali))} 
-            style={styles.addButton}
-          >
-            <Text style={styles.buttonText}>{quantity > 0 ? "+" : "Add"}</Text>
-          </TouchableOpacity>
+          {!isAdmin && (
+            <TouchableOpacity 
+              onPress={() => dispatch(addToCart(thali))} 
+              style={styles.addButton}
+            >
+              <Text style={styles.buttonText}>{quantity > 0 ? "+" : "Add"}</Text>
+            </TouchableOpacity>
+          )}
+
+          {isAdmin && (
+            <>
+              <TouchableOpacity style={styles.updateButton}>
+                <Text style={styles.buttonText}>Update</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.deleteButton}>
+                <Text style={styles.buttonText}>Delete</Text>
+              </TouchableOpacity>
+            </>
+          )}
         </View>
       </View>
     </View>
@@ -80,20 +94,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 5,
   },
-  addButton: {
-    backgroundColor: "#28a745",
-    padding: 8,
-    borderRadius: 5,
-    marginLeft: 10, 
-    minWidth: 50,
-    alignItems: "center",
-  },
-  removeButton: {
-    backgroundColor: "#dc3545",
+  updateButton: {
+    backgroundColor: "#007bff",
     padding: 8,
     borderRadius: 5,
     marginRight: 10, 
-    minWidth: 50,
+    minWidth: 80,
+    alignItems: "center",
+  },
+  deleteButton: {
+    backgroundColor: "#dc3545",
+    padding: 8,
+    borderRadius: 5,
+    minWidth: 80,
     alignItems: "center",
   },
   buttonText: {
