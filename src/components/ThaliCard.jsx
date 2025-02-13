@@ -1,12 +1,23 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart, removeFromCart } from '../redux/cartSlice';
+import { addToCart, deleteDish, removeFromCart } from '../redux/cartSlice';
+import { useNavigation } from '@react-navigation/native';
 
 const ThaliCard = ({ thali, isAdmin }) => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const cart = useSelector(state => state.thali.cart);
   const quantity = cart[thali.id]?.quantity || 0;
+
+  const handleUpdate = () => {
+    navigation.navigate('uploadDish', { thali });   
+  }
+
+  const handleDelete = () => {
+    console.log("function called");
+    dispatch(deleteDish(thali.id));
+  }
 
   return (
     <View style={styles.card}>
@@ -16,7 +27,6 @@ const ThaliCard = ({ thali, isAdmin }) => {
         <Text style={styles.name}>{thali.name}</Text>
         <Text style={styles.price}>₹{thali.price}</Text>
 
-        
         <View style={styles.buttonContainer}>
           {!isAdmin && quantity > 0 && (
             <>
@@ -26,7 +36,6 @@ const ThaliCard = ({ thali, isAdmin }) => {
               >
                 <Text style={styles.buttonText}>-</Text>
               </TouchableOpacity>
-
               <Text style={styles.quantityText}>{quantity}</Text>
             </>
           )}
@@ -42,10 +51,10 @@ const ThaliCard = ({ thali, isAdmin }) => {
 
           {isAdmin && (
             <>
-              <TouchableOpacity style={styles.updateButton}>
+              <TouchableOpacity onPress={handleUpdate} style={styles.updateButton}>
                 <Text style={styles.buttonText}>Update</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.deleteButton}>
+              <TouchableOpacity onPress={handleDelete} style={styles.deleteButton}>
                 <Text style={styles.buttonText}>Delete</Text>
               </TouchableOpacity>
             </>
@@ -96,23 +105,57 @@ const styles = StyleSheet.create({
   },
   updateButton: {
     backgroundColor: "#007bff",
-    padding: 8,
-    borderRadius: 5,
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 20,
     marginRight: 10, 
     minWidth: 80,
     alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
   deleteButton: {
     backgroundColor: "#dc3545",
-    padding: 8,
-    borderRadius: 5,
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 20,
     minWidth: 80,
     alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  addButton: {
+    backgroundColor: "#28a745",
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 20,
+    minWidth: 80,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  removeButton: {
+    backgroundColor: "#ffc107",
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 20,
+    minWidth: 50,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
   buttonText: {
     color: "#fff",
-    fontWeight: "bold",
-    fontSize: 18,
+    fontWeight: "600",
+    fontSize: 16,
   },
   quantityText: {
     fontSize: 18,

@@ -1,18 +1,6 @@
 {
   "thalis": [
     {
-      "id": "1",
-      "name": "Veg Thali",
-      "price": 250,
-      "image": "https://media.istockphoto.com/id/1319636433/photo/malay-traditional-food-nasi-kerabu.jpg?s=612x612&w=is&k=20&c=QyU9azlKrP5Pnmp3ZNYl30f3mu3J5sMARPkyF-J1B0M="
-    },
-    {
-      "id": "2",
-      "name": "Special Veg Thali",
-      "price": 350,
-      "image": "https://media.istockphoto.com/id/1319636433/photo/malay-traditional-food-nasi-kerabu.jpg?s=612x612&w=is&k=20&c=QyU9azlKrP5Pnmp3ZNYl30f3mu3J5sMARPkyF-J1B0M="
-    },
-    {
       "id": "3",
       "name": "Non-Veg Thali",
       "price": 400,
@@ -25,52 +13,28 @@
       "image": "https://media.istockphoto.com/id/1319636433/photo/malay-traditional-food-nasi-kerabu.jpg?s=612x612&w=is&k=20&c=QyU9azlKrP5Pnmp3ZNYl30f3mu3J5sMARPkyF-J1B0M="
     },
     {
+      "id": "2",
+      "name": "Special Veg Thali",
+      "price": "350",
+      "image": "https://media.istockphoto.com/id/1319636433/photo/malay-traditional-food-nasi-kerabu.jpg?s=612x612&w=is&k=20&c=QyU9azlKrP5Pnmp3ZNYl30f3mu3J5sMARPkyF-J1B0M="
+    },
+    {
       "id": "5",
       "name": "South Indian Thali",
-      "price": 300,
+      "price": "300",
       "image": "https://media.istockphoto.com/id/1319636433/photo/malay-traditional-food-nasi-kerabu.jpg?s=612x612&w=is&k=20&c=QyU9azlKrP5Pnmp3ZNYl30f3mu3J5sMARPkyF-J1B0M="
     },
     {
       "id": "6",
       "name": "Rajasthani Thali",
-      "price": 380,
+      "price": "500",
       "image": "https://media.istockphoto.com/id/1319636433/photo/malay-traditional-food-nasi-kerabu.jpg?s=612x612&w=is&k=20&c=QyU9azlKrP5Pnmp3ZNYl30f3mu3J5sMARPkyF-J1B0M="
     },
     {
-      "id": "12",
-      "name": "Special Veg Thali",
-      "price": 450,
-      "image": "https://media.istockphoto.com/id/1319636433/photo/malay-traditional-food-nasi-kerabu.jpg?s=612x612&w=is&k=20&c=QyU9azlKrP5Pnmp3ZNYl30f3mu3J5sMARPkyF-J1B0M=abc"
-    },
-    {
-      "id": "10",
-      "name": "Fun",
-      "price": "5580",
-      "image": "Su GG hh dhn. Com"
-    },
-    {
-      "id": "5",
-      "name": "Vsjsbdb",
-      "price": "698",
-      "image": "Hwiwowjwv.cicodnbs"
-    },
-    {
-      "id": "15",
-      "name": "Abchsjdx",
-      "price": "8569",
-      "image": "Abc.com"
-    },
-    {
-      "id": "123",
-      "name": "Pav bhaji ",
-      "price": "45",
-      "image": "https://images.app.goo.gl/T5uV4igmg9t6PdoQ6"
-    },
-    {
-      "id": "15aa",
-      "name": "Abc",
-      "price": "250",
-      "image": "Avbc"
+      "id": "1",
+      "name": "Veg dish ",
+      "price": "300",
+      "image": "https://www.feastingathome.com/wp-content/uploads/2022/04/Coconut-Rice-Bowl-9-1024x1536.jpg"
     }
   ]
 }

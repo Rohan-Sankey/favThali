@@ -9,17 +9,20 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
-import {uploadDish} from '../redux/cartSlice';
+import {uploadDish, updateDish} from '../redux/cartSlice';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const UploadDish = () => {
   const dispatch = useDispatch();
+  const route = useRoute();
+  const navigation = useNavigation();
 
-  const [Thali, setThali] = useState({
-    id: '',
-    name: '',
-    price: '',
-    image: '',
-  });
+  const[Thali , setThali] = useState(
+    route.params ?.thali || { id: '', name: '', price: '', image: '' }
+  )
+
+  const isUpdate = route.params?.thali ? true : false ;
+
 
   const handleChange = (key, value) => {
     setThali({...Thali, [key]: value});
@@ -32,19 +35,24 @@ const UploadDish = () => {
     }
 
     try {
+      if(isUpdate){
+        await dispatch(updateDish(Thali)); 
+        Alert.alert('Thali Updted !');
+      } else {
       await dispatch(uploadDish(Thali));
-
       Alert.alert('Thali uploaded!');
+      }
 
+      navigation.goBack();
       setThali({id: '', name: '', price: '', image: ''});
     } catch (error) {
-        Alert.alert('error uploading thali ' , error.message)
+      Alert.alert('error uploading thali ', error.message);
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Upload New Dish</Text>
+      <Text style={styles.title}> {isUpdate ? 'Update Dish' : 'Upload New Dish'}</Text>
 
       <TextInput
         style={styles.input}
@@ -53,6 +61,7 @@ const UploadDish = () => {
         value={Thali.id}
         onChangeText={text => handleChange('id', text)}
         keyboardType="numeric"
+       // editable = {!isUpdate} //only editable while uploading
       />
 
       <TextInput
@@ -85,7 +94,7 @@ const UploadDish = () => {
       ) : null}
 
       <TouchableOpacity style={styles.uploadButton} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>Upload Thali</Text>
+        <Text style={styles.buttonText}>{isUpdate? 'Update thali' : 'Upload Thali'}</Text>
       </TouchableOpacity>
     </View>
   );

@@ -17,10 +17,12 @@ import ModalScreen from '../screens/ModalScreen';
 const HomeScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const isAdmin = route.params?.isAdmin || false; // Get admin flag from navigation
+  const isAdmin = route.params?.isAdmin || false; 
 
   const [isModalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
+
+
 
   const { cart, thaliData = [], loading, error } = useSelector(state => state.thali);
   const totalItems = cart ? Object.keys(cart).length : 0;
@@ -40,7 +42,7 @@ const HomeScreen = () => {
       <View style={styles.headerRow}>
         <Text style={styles.featuredText}>Featured Thalis</Text>
 
-        {/* Hide Cart for Admin */}
+        
         {!isAdmin && (
           <TouchableOpacity onPress={toggleModal} style={styles.cartContainer}>
             <Image
@@ -73,7 +75,7 @@ const HomeScreen = () => {
 
       <ModalScreen isVisible={isModalVisible} onClose={toggleModal} />
 
-      {/* Show Add Button for Admin Only */}
+      
       {isAdmin && (
         <TouchableOpacity
           style={styles.addButton}
