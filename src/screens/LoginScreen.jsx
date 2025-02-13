@@ -24,7 +24,7 @@ const LoginScreen = ({navigation}) => {
 
       <TextInput
         style={styles.input}
-        placeholder="Enter Email"
+        placeholder="Email"
         placeholderTextColor="#ccc"
         value={email}
         keyboardType="email-address"
@@ -34,7 +34,7 @@ const LoginScreen = ({navigation}) => {
 
       <TextInput
         style={styles.input}
-        placeholder="Enter Password"
+        placeholder="Password"
         placeholderTextColor="#ccc"
         value={password}
         secureTextEntry
