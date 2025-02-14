@@ -1,34 +1,28 @@
 {
   "thalis": [
     {
-      "id": "3",
-      "name": "Non-Veg Thali",
-      "price": 400,
-      "image": "https://media.istockphoto.com/id/1319636433/photo/malay-traditional-food-nasi-kerabu.jpg?s=612x612&w=is&k=20&c=QyU9azlKrP5Pnmp3ZNYl30f3mu3J5sMARPkyF-J1B0M="
-    },
-    {
       "id": "4",
       "name": "Seafood Thali",
-      "price": 450,
-      "image": "https://media.istockphoto.com/id/1319636433/photo/malay-traditional-food-nasi-kerabu.jpg?s=612x612&w=is&k=20&c=QyU9azlKrP5Pnmp3ZNYl30f3mu3J5sMARPkyF-J1B0M="
+      "price": "800",
+      "image": "https://images.pexels.com/photos/725991/pexels-photo-725991.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
     },
     {
       "id": "2",
       "name": "Special Veg Thali",
       "price": "350",
-      "image": "https://media.istockphoto.com/id/1319636433/photo/malay-traditional-food-nasi-kerabu.jpg?s=612x612&w=is&k=20&c=QyU9azlKrP5Pnmp3ZNYl30f3mu3J5sMARPkyF-J1B0M="
+      "image": "https://as2.ftcdn.net/jpg/02/75/39/13/1000_F_275391367_Hro3Ql1iFsCNtd86zWYuqa0Qe5cc7goE.jpg"
     },
     {
       "id": "5",
       "name": "South Indian Thali",
       "price": "300",
-      "image": "https://media.istockphoto.com/id/1319636433/photo/malay-traditional-food-nasi-kerabu.jpg?s=612x612&w=is&k=20&c=QyU9azlKrP5Pnmp3ZNYl30f3mu3J5sMARPkyF-J1B0M="
+      "image": "https://images.pexels.com/photos/5410418/pexels-photo-5410418.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
     },
     {
       "id": "6",
       "name": "Rajasthani Thali",
       "price": "500",
-      "image": "https://media.istockphoto.com/id/1319636433/photo/malay-traditional-food-nasi-kerabu.jpg?s=612x612&w=is&k=20&c=QyU9azlKrP5Pnmp3ZNYl30f3mu3J5sMARPkyF-J1B0M="
+      "image": "https://as1.ftcdn.net/jpg/11/51/29/30/1000_F_1151293071_feEZArbPUQBxS2wSG51SCT025A3XgBF3.jpg"
     },
     {
       "id": "1",

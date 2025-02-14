@@ -32,18 +32,21 @@ const HomeScreen = () => {
     dispatch(loadCart());
   }, [dispatch]);
 
-  const toggleModal = () => {
+  const toggleModal = () => {                                                                                       
     setModalVisible(!isModalVisible);
   };
 
   return (
     <View style={styles.container}>
+      <Text style={styles.topLeftIcon}>{isAdmin ? "A" : "U"}</Text> 
       <BannerImage imageSource={require('../assets/images/header_image.jpg')} />
       <View style={styles.headerRow}>
-        <Text style={styles.featuredText}>Featured Thalis</Text>
+        <Text style={styles.featuredText}> { isAdmin ? "Available Data" : "Featured Thalis "}</Text>
+        {/* <Text style = {styles.iconText}>{isAdmin ? "A" : "U"}</Text> */}
 
         
         {!isAdmin && (
+          
           <TouchableOpacity onPress={toggleModal} style={styles.cartContainer}>
             <Image
               source={require('../assets/icons/menu.png')}
@@ -167,5 +170,19 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: 'white',
     fontWeight: 'bold',
+  },
+
+  topLeftIcon: {
+    position: 'absolute',
+    top: 10, // Distance from top
+    left: 10, // Distance from left
+    fontSize: 22,
+    fontWeight: "bold",
+    color: '#ffae42',
+    backgroundColor: 'rgba(0,0,0,0.5)', // Optional background for visibility
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 5,
+    zIndex: 10, // Ensure it's above other elements
   },
 });

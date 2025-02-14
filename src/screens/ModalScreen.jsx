@@ -12,20 +12,6 @@ import { useNavigation } from '@react-navigation/native';
 const CartModal = ({ isVisible, onClose }) => {
   const navigation = useNavigation();
 
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      () => {
-        if (isVisible) {
-          onClose();
-          return true;
-        }
-        return false;
-      }
-    );
-
-    return () => backHandler.remove();
-  }, [isVisible]);
 
   return (
     <Modal

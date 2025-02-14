@@ -4,7 +4,7 @@ import axios from 'axios';
 import thaliData from '../Dishes';
 import {act} from 'react';
 
-const URL = 'http://192.168.1.4:3000/thalis';
+const URL = 'http://172.16.0.123:3000/thalis';
 
 export const fetchDishData = createAsyncThunk(
   'dish/fetchDishData',
