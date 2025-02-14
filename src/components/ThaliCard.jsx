@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   removeButton: {
-    backgroundColor: "#ffc107",
+    backgroundColor: "rgb(218, 86, 86)",
     paddingVertical: 8,
     paddingHorizontal: 15,
     borderRadius: 20,

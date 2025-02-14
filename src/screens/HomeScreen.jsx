@@ -39,7 +39,7 @@ const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.topLeftIcon}>{isAdmin ? "A" : "U"}</Text> 
-      <BannerImage imageSource={require('../assets/images/header_image.jpg')} />
+      <BannerImage imageSource={require('../assets/images/banner3.jpg')} />
       <View style={styles.headerRow}>
         <Text style={styles.featuredText}> { isAdmin ? "Available Data" : "Featured Thalis "}</Text>
         {/* <Text style = {styles.iconText}>{isAdmin ? "A" : "U"}</Text> */}

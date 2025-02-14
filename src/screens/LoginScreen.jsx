@@ -17,7 +17,7 @@ const LoginScreen = ({navigation}) => {
     } else if(email === 'admin@gmail.com' && password === '123'){
         navigation.navigate('Home' , {isAdmin : true})
     } else {
-      navigation.navigate('Home' , {isAdmin})
+      navigation.navigate('Home' , {isAdmin : false})
     }
   };
 
