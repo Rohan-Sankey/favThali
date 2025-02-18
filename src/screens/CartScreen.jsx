@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   View,
   Text,
@@ -7,39 +7,40 @@ import {
   StyleSheet,
   Alert,
   Image,
+  Modal,
 } from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
-import {clearCart} from '../redux/cartSlice';
-import {useNavigation} from '@react-navigation/native';
-import {handlePayment} from '../RazorPayMock';
+import { useSelector, useDispatch } from 'react-redux';
+import { clearCart } from '../redux/cartSlice';
+import { handlePayment } from '../RazorPayMock';
 
 const CartScreen = () => {
-  //  const navigation = useNavigation();
   const dispatch = useDispatch();
   const cart = useSelector(state => state.thali.cart) || {};
   const cartItems = Object.values(cart);
 
+  const [modalVisible, setModalVisible] = useState(false); 
+
   const handlePaymentPress = async () => {
+    setModalVisible(false); 
+
     try {
+      const isSuccess = await handlePayment();
+      console.log(isSuccess);
 
-      const isSucess = await handlePayment();
-      console.log(isSucess);
-      
-
-      if (isSucess) {
-        Alert.alert('Payment Successful !', 'Do you want to clear the cart ?', [
+      if (isSuccess) {
+        Alert.alert('Payment Successful!', 'Do you want to clear the cart?', [
           {
-            text: 'no',
+            text: 'No',
             style: 'cancel',
           },
           {
-            text: 'yes',
+            text: 'Yes',
             onPress: () => dispatch(clearCart()),
           },
         ]);
       }
     } catch (error) {
-      console.log('payment failed ');
+      console.log('Payment failed');
     }
   };
 
@@ -51,6 +52,9 @@ const CartScreen = () => {
       ),
     [cartItems],
   );
+
+  const deliveryCharges = totalPrice * 0.08; 
+  const totalWithDelivery = totalPrice + deliveryCharges; 
 
   return (
     <View style={styles.container}>
@@ -73,10 +77,10 @@ const CartScreen = () => {
       ) : (
         <View style={styles.tableContainer}>
           <View style={styles.tableHeader}>
-            <Text style={[styles.headerText, {flex: 2}]}>Item</Text>
+            <Text style={[styles.headerText, { flex: 2 }]}>Item</Text>
             <Text style={styles.headerText}>Price</Text>
             <Text style={styles.headerText}>Qty</Text>
-            <Text style={[styles.headerText, {flex: 1.5}]}>Total</Text>
+            <Text style={[styles.headerText, { flex: 1.5 }]}>Total</Text>
           </View>
 
           <FlatList
@@ -84,13 +88,13 @@ const CartScreen = () => {
             keyExtractor={item =>
               item?.id ? item.id.toString() : Math.random().toString()
             }
-            renderItem={({item}) =>
+            renderItem={({ item }) =>
               item && item.name ? (
                 <View style={styles.cartItem}>
-                  <Text style={[styles.itemText, {flex: 2}]}>{item.name}</Text>
+                  <Text style={[styles.itemText, { flex: 2 }]}>{item.name}</Text>
                   <Text style={styles.itemText}>₹{item.price}</Text>
                   <Text style={styles.itemText}>{item.quantity}</Text>
-                  <Text style={[styles.itemTotal, {flex: 1.5}]}>
+                  <Text style={[styles.itemTotal, { flex: 1.5 }]}>
                     ₹{item.price * item.quantity}
                   </Text>
                 </View>
@@ -105,11 +109,53 @@ const CartScreen = () => {
           <Text style={styles.totalText}>Total: ₹{totalPrice}</Text>
           <TouchableOpacity
             style={styles.paymentButton}
-            onPress={handlePaymentPress}>
+            onPress={() => setModalVisible(true)}>
             <Text style={styles.paymentButtonText}>Proceed to Payment</Text>
           </TouchableOpacity>
         </View>
       )}
+
+     
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Checkout Summary</Text>
+
+           
+            <View style={styles.modalTable}>
+              <View style={styles.modalTableRow}>
+                <Text style={styles.modalTableHeader}>Total</Text>
+                <Text style={styles.modalTableValue}>₹{totalPrice.toFixed(2)}</Text>
+              </View>
+              <View style={styles.modalTableRow}>
+                <Text style={styles.modalTableHeader}>Delivery Charges (8%)</Text>
+                <Text style={styles.modalTableValue}>₹{deliveryCharges.toFixed(2)}</Text>
+              </View>
+              <View style={styles.modalTableRow}>
+                <Text style={styles.modalTableHeader}>Total with Delivery</Text>
+                <Text style={styles.modalTableValue}>₹{totalWithDelivery.toFixed(2)}</Text>
+              </View>
+            </View>
+
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={() => setModalVisible(false)}>
+                <Text style={styles.buttonText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.confirmButton}
+                onPress={handlePaymentPress}>
+                <Text style={styles.buttonText}>Confirm Payment</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -143,12 +189,6 @@ const styles = StyleSheet.create({
     height: 24,
     tintColor: 'white',
   },
-  // emptyCartText: {
-  //   fontSize: 18,
-  //   color: '#bbb',
-  //   textAlign: 'center',
-  //   marginTop: 50,
-  // },
   tableContainer: {
     marginBottom: 20,
     backgroundColor: '#1e1e1e',
@@ -218,5 +258,64 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: '#fff',
+  },
+  
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+  },
+  modalContent: {
+    width: '80%',
+    backgroundColor: '#222',
+    padding: 20,
+    borderRadius: 10,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#f5cb5c',
+    textAlign: 'center',
+    marginBottom: 15,
+  },
+  modalTable: {
+    marginBottom: 20,
+    marginTop: 20,
+  },
+  modalTableRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+    paddingVertical: 5,
+  },
+  modalTableHeader: {
+    fontSize: 16,
+    color: '#f5cb5c',
+    fontWeight: 'bold',
+  },
+  modalTableValue: {
+    fontSize: 16,
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+  },
+  cancelButton: {
+    backgroundColor: '#555',
+    padding: 10,
+    borderRadius: 8,
+  },
+  confirmButton: {
+    backgroundColor: '#ff5733',
+    padding: 10,
+    borderRadius: 8,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });

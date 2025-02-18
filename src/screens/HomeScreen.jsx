@@ -174,15 +174,15 @@ const styles = StyleSheet.create({
 
   topLeftIcon: {
     position: 'absolute',
-    top: 10, // Distance from top
-    left: 10, // Distance from left
+    top: 10, 
+    left: 10, 
     fontSize: 22,
     fontWeight: "bold",
     color: '#ffae42',
-    backgroundColor: 'rgba(0,0,0,0.5)', // Optional background for visibility
+    backgroundColor: 'rgba(0,0,0,0.5)', 
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 5,
-    zIndex: 10, // Ensure it's above other elements
+    zIndex: 10, 
   },
 });

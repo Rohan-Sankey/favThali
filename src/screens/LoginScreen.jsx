@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const LoginScreen = ({navigation}) => {
 
-  // const isAdmin = false;
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
