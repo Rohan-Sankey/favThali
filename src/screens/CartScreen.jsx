@@ -2,8 +2,10 @@ import React, { useMemo } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearCart } from '../redux/cartSlice'; 
+import { useNavigation } from '@react-navigation/native';
 
 const CartScreen = () => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const cart = useSelector(state => state.thali.cart) || {};
   const cartItems = Object.values(cart);
@@ -57,7 +59,7 @@ const CartScreen = () => {
           <Text style={styles.totalText}>Total: ₹{totalPrice}</Text>
           <TouchableOpacity
             style={styles.paymentButton}
-            onPress={() => Alert.alert('Functionality to be implemented later...')}
+            onPress={() =>navigation.navigate('PaymentMethods')}
           >
             <Text style={styles.paymentButtonText}>Proceed to Payment</Text>
           </TouchableOpacity>

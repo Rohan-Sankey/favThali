@@ -9,6 +9,7 @@ import CartScreen from "./src/screens/CartScreen";
 import LoginScreen from "./src/screens/LoginScreen";
 import { uploadDish } from "./src/redux/cartSlice";
 import UploadDish from "./src/screens/uploadDish";
+import PaymentMethods from "./src/screens/PaymentMethods";
 
 
 const Stack = createNativeStackNavigator();
@@ -23,6 +24,7 @@ const App = () => {
           <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}} />
           <Stack.Screen name="CartScreen" component={CartScreen} />
           <Stack.Screen name = "uploadDish" component={UploadDish}/>
+          <Stack.Screen name="PaymentMethods" component={PaymentMethods}/>
         </Stack.Navigator>
       </NavigationContainer>
       </GestureHandlerRootView>
