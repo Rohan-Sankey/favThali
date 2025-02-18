@@ -1,18 +1,55 @@
-import React, { useMemo } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
-import { clearCart } from '../redux/cartSlice'; 
-import { useNavigation } from '@react-navigation/native';
+import React, {useMemo} from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  Image,
+} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
+import {clearCart} from '../redux/cartSlice';
+import {useNavigation} from '@react-navigation/native';
+import {handlePayment} from '../RazorPayMock';
 
 const CartScreen = () => {
-  const navigation = useNavigation();
+  //  const navigation = useNavigation();
   const dispatch = useDispatch();
   const cart = useSelector(state => state.thali.cart) || {};
   const cartItems = Object.values(cart);
 
+  const handlePaymentPress = async () => {
+    try {
+
+      const isSucess = await handlePayment();
+      console.log(isSucess);
+      
+
+      if (isSucess) {
+        Alert.alert('Payment Successful !', 'Do you want to clear the cart ?', [
+          {
+            text: 'no',
+            style: 'cancel',
+          },
+          {
+            text: 'yes',
+            onPress: () => dispatch(clearCart()),
+          },
+        ]);
+      }
+    } catch (error) {
+      console.log('payment failed ');
+    }
+  };
+
   const totalPrice = useMemo(
-    () => cartItems.reduce((total, item) => total + (item.price || 0) * (item.quantity || 0), 0),
-    [cartItems]
+    () =>
+      cartItems.reduce(
+        (total, item) => total + (item.price || 0) * (item.quantity || 0),
+        0,
+      ),
+    [cartItems],
   );
 
   return (
@@ -20,8 +57,13 @@ const CartScreen = () => {
       <View style={styles.header}>
         <Text style={styles.title}>Your Cart</Text>
         {cartItems.length > 0 && (
-          <TouchableOpacity onPress={() => dispatch(clearCart())} style={styles.clearCartButton}>
-            <Image source={require('../assets/icons/cart.png')} style={styles.trashIcon} />
+          <TouchableOpacity
+            onPress={() => dispatch(clearCart())}
+            style={styles.clearCartButton}>
+            <Image
+              source={require('../assets/icons/cart.png')}
+              style={styles.trashIcon}
+            />
           </TouchableOpacity>
         )}
       </View>
@@ -31,22 +73,26 @@ const CartScreen = () => {
       ) : (
         <View style={styles.tableContainer}>
           <View style={styles.tableHeader}>
-            <Text style={[styles.headerText, { flex: 2 }]}>Item</Text>
+            <Text style={[styles.headerText, {flex: 2}]}>Item</Text>
             <Text style={styles.headerText}>Price</Text>
             <Text style={styles.headerText}>Qty</Text>
-            <Text style={[styles.headerText, { flex: 1.5 }]}>Total</Text>
+            <Text style={[styles.headerText, {flex: 1.5}]}>Total</Text>
           </View>
 
           <FlatList
             data={cartItems}
-            keyExtractor={item => (item?.id ? item.id.toString() : Math.random().toString())}
-            renderItem={({ item }) =>
+            keyExtractor={item =>
+              item?.id ? item.id.toString() : Math.random().toString()
+            }
+            renderItem={({item}) =>
               item && item.name ? (
                 <View style={styles.cartItem}>
-                  <Text style={[styles.itemText, { flex: 2 }]}>{item.name}</Text>
+                  <Text style={[styles.itemText, {flex: 2}]}>{item.name}</Text>
                   <Text style={styles.itemText}>₹{item.price}</Text>
                   <Text style={styles.itemText}>{item.quantity}</Text>
-                  <Text style={[styles.itemTotal, { flex: 1.5 }]}>₹{item.price * item.quantity}</Text>
+                  <Text style={[styles.itemTotal, {flex: 1.5}]}>
+                    ₹{item.price * item.quantity}
+                  </Text>
                 </View>
               ) : null
             }
@@ -59,8 +105,7 @@ const CartScreen = () => {
           <Text style={styles.totalText}>Total: ₹{totalPrice}</Text>
           <TouchableOpacity
             style={styles.paymentButton}
-            onPress={() =>Alert.alert('to be implemented ')}
-          >
+            onPress={handlePaymentPress}>
             <Text style={styles.paymentButtonText}>Proceed to Payment</Text>
           </TouchableOpacity>
         </View>
@@ -109,9 +154,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#1e1e1e',
     borderRadius: 10,
     padding: 10,
-    paddingLeft: 0, 
-    paddingRight: 0, 
-},
+    paddingLeft: 0,
+    paddingRight: 0,
+  },
 
   tableHeader: {
     flexDirection: 'row',
