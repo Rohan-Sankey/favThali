@@ -72,7 +72,7 @@ export default CartScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: 15,
     backgroundColor: '#121212',
   },
   header: {
@@ -96,21 +96,24 @@ const styles = StyleSheet.create({
     height: 24,
     tintColor: 'white',
   },
-  emptyCartText: {
-    fontSize: 18,
-    color: '#bbb',
-    textAlign: 'center',
-    marginTop: 50,
-  },
+  // emptyCartText: {
+  //   fontSize: 18,
+  //   color: '#bbb',
+  //   textAlign: 'center',
+  //   marginTop: 50,
+  // },
   tableContainer: {
     marginBottom: 20,
     backgroundColor: '#1e1e1e',
     borderRadius: 10,
     padding: 10,
-  },
+    paddingLeft: 0, 
+    paddingRight: 0, 
+},
+
   tableHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     paddingVertical: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#555',

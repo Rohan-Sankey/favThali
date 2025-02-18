@@ -19,7 +19,7 @@ const App = () => {
       <GestureHandlerRootView style = {{flex:1}}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="LoginScreen">
-          <Stack.Screen name = "LoginScreen" component={LoginScreen}/>
+          <Stack.Screen name = "LoginScreen" component={LoginScreen} options={{headerShown : false}}/>
           <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}} />
           <Stack.Screen name="CartScreen" component={CartScreen} />
           <Stack.Screen name = "uploadDish" component={UploadDish}/>
