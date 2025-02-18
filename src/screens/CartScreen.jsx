@@ -59,7 +59,7 @@ const CartScreen = () => {
           <Text style={styles.totalText}>Total: ₹{totalPrice}</Text>
           <TouchableOpacity
             style={styles.paymentButton}
-            onPress={() =>navigation.navigate('PaymentMethods')}
+            onPress={() =>Alert.alert('to be implemented ')}
           >
             <Text style={styles.paymentButtonText}>Proceed to Payment</Text>
           </TouchableOpacity>
