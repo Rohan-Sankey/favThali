@@ -1,44 +1,36 @@
-import React, { useMemo, useState } from 'react';
+import React, {useMemo, useState} from 'react';
 import {
   View,
   Text,
   FlatList,
   TouchableOpacity,
   StyleSheet,
-  Alert,
   Image,
   Modal,
 } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
-import { clearCart } from '../redux/cartSlice';
-import { handlePayment } from '../RazorPayMock';
+import {useSelector, useDispatch} from 'react-redux';
+import {clearCart} from '../redux/cartSlice';
+import {handlePayment} from '../RazorPayMock';
+import {useNavigation} from '@react-navigation/native';
 
 const CartScreen = () => {
   const dispatch = useDispatch();
   const cart = useSelector(state => state.thali.cart) || {};
   const cartItems = Object.values(cart);
+  const navigation = useNavigation();
 
-  const [modalVisible, setModalVisible] = useState(false); 
+  const [modalVisible, setModalVisible] = useState(false);
 
   const handlePaymentPress = async () => {
-    setModalVisible(false); 
+    setModalVisible(false);
 
     try {
       const isSuccess = await handlePayment();
       console.log(isSuccess);
 
-      if (isSuccess) {
-        Alert.alert('Payment Successful!', 'Do you want to clear the cart?', [
-          {
-            text: 'No',
-            style: 'cancel',
-          },
-          {
-            text: 'Yes',
-            onPress: () => dispatch(clearCart()),
-          },
-        ]);
-      }
+      navigation.navigate('PaymentResultScreen', {result: isSuccess ? 'success' : 'failed'});
+      if (isSuccess) dispatch(clearCart());  // clear the cart after successful payment 
+
     } catch (error) {
       console.log('Payment failed');
     }
@@ -51,10 +43,11 @@ const CartScreen = () => {
         0,
       ),
     [cartItems],
+    console.log('usememo called ')
   );
 
-  const deliveryCharges = totalPrice * 0.08; 
-  const totalWithDelivery = totalPrice + deliveryCharges; 
+  const deliveryCharges = totalPrice * 0.08;
+  const totalWithDelivery = totalPrice + deliveryCharges;
 
   return (
     <View style={styles.container}>
@@ -77,10 +70,10 @@ const CartScreen = () => {
       ) : (
         <View style={styles.tableContainer}>
           <View style={styles.tableHeader}>
-            <Text style={[styles.headerText, { flex: 2 }]}>Item</Text>
+            <Text style={[styles.headerText, {flex: 2}]}>Item</Text>
             <Text style={styles.headerText}>Price</Text>
             <Text style={styles.headerText}>Qty</Text>
-            <Text style={[styles.headerText, { flex: 1.5 }]}>Total</Text>
+            <Text style={[styles.headerText, {flex: 1.5}]}>Total</Text>
           </View>
 
           <FlatList
@@ -88,13 +81,13 @@ const CartScreen = () => {
             keyExtractor={item =>
               item?.id ? item.id.toString() : Math.random().toString()
             }
-            renderItem={({ item }) =>
+            renderItem={({item}) =>
               item && item.name ? (
                 <View style={styles.cartItem}>
-                  <Text style={[styles.itemText, { flex: 2 }]}>{item.name}</Text>
+                  <Text style={[styles.itemText, {flex: 2}]}>{item.name}</Text>
                   <Text style={styles.itemText}>₹{item.price}</Text>
                   <Text style={styles.itemText}>{item.quantity}</Text>
-                  <Text style={[styles.itemTotal, { flex: 1.5 }]}>
+                  <Text style={[styles.itemTotal, {flex: 1.5}]}>
                     ₹{item.price * item.quantity}
                   </Text>
                 </View>
@@ -115,7 +108,6 @@ const CartScreen = () => {
         </View>
       )}
 
-     
       <Modal
         animationType="slide"
         transparent={true}
@@ -125,19 +117,26 @@ const CartScreen = () => {
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Checkout Summary</Text>
 
-           
             <View style={styles.modalTable}>
               <View style={styles.modalTableRow}>
                 <Text style={styles.modalTableHeader}>Total</Text>
-                <Text style={styles.modalTableValue}>₹{totalPrice.toFixed(2)}</Text>
+                <Text style={styles.modalTableValue}>
+                  ₹{totalPrice.toFixed(2)}
+                </Text>
               </View>
               <View style={styles.modalTableRow}>
-                <Text style={styles.modalTableHeader}>Delivery Charges (8%)</Text>
-                <Text style={styles.modalTableValue}>₹{deliveryCharges.toFixed(2)}</Text>
+                <Text style={styles.modalTableHeader}>
+                  Delivery Charges (8%)
+                </Text>
+                <Text style={styles.modalTableValue}>
+                  ₹{deliveryCharges.toFixed(2)}
+                </Text>
               </View>
               <View style={styles.modalTableRow}>
                 <Text style={styles.modalTableHeader}>Total with Delivery</Text>
-                <Text style={styles.modalTableValue}>₹{totalWithDelivery.toFixed(2)}</Text>
+                <Text style={styles.modalTableValue}>
+                  ₹{totalWithDelivery.toFixed(2)}
+                </Text>
               </View>
             </View>
 
@@ -166,7 +165,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
-    backgroundColor: '#121212',
+    backgroundColor: '#121212', 
   },
   header: {
     flexDirection: 'row',
@@ -181,7 +180,7 @@ const styles = StyleSheet.create({
   },
   clearCartButton: {
     padding: 8,
-    backgroundColor: '#ff3333',
+    backgroundColor: '#ff6666', 
     borderRadius: 8,
   },
   trashIcon: {
@@ -191,19 +190,18 @@ const styles = StyleSheet.create({
   },
   tableContainer: {
     marginBottom: 20,
-    backgroundColor: '#1e1e1e',
+    backgroundColor: '#1e1e1e', 
     borderRadius: 10,
     padding: 10,
     paddingLeft: 0,
     paddingRight: 0,
   },
-
   tableHeader: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#555',
+    borderBottomColor: '#333', // Darker border
   },
   headerText: {
     fontSize: 16,
@@ -216,66 +214,67 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#222',
+    backgroundColor: '#2a2a2a', 
     padding: 12,
     marginVertical: 6,
     borderRadius: 8,
   },
   itemText: {
     fontSize: 16,
-    color: '#fff',
+    color: '#fff', 
     flex: 1,
     textAlign: 'center',
   },
   itemTotal: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#ff5733',
+    color: '#ff6666',
     flex: 1,
     textAlign: 'center',
   },
   totalContainer: {
     marginTop: 30,
     padding: 15,
-    backgroundColor: '#333',
+    backgroundColor: '#1e1e1e', 
     borderRadius: 10,
     alignItems: 'center',
+    
   },
   totalText: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#fff', 
     marginBottom: 10,
   },
   paymentButton: {
-    backgroundColor: '#ff5733',
+    backgroundColor: '#ff6666', 
     paddingVertical: 12,
     paddingHorizontal: 30,
     borderRadius: 8,
     alignItems: 'center',
+    // position : 'static'
   },
   paymentButtonText: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#fff',
   },
-  
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)', // Darker overlay
   },
   modalContent: {
     width: '80%',
-    backgroundColor: '#222',
+    backgroundColor: '#1e1e1e', // Darker modal background
     padding: 20,
     borderRadius: 10,
   },
   modalTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#f5cb5c',
+    color: '#f5cb5c', // Soft yellow for modal title
     textAlign: 'center',
     marginBottom: 15,
   },
@@ -291,7 +290,7 @@ const styles = StyleSheet.create({
   },
   modalTableHeader: {
     fontSize: 16,
-    color: '#f5cb5c',
+    color: '#f5cb5c', 
     fontWeight: 'bold',
   },
   modalTableValue: {
@@ -305,12 +304,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   cancelButton: {
-    backgroundColor: '#555',
+    backgroundColor: '#333', 
     padding: 10,
     borderRadius: 8,
   },
   confirmButton: {
-    backgroundColor: '#ff5733',
+    backgroundColor: '#ff6666', 
     padding: 10,
     borderRadius: 8,
   },
