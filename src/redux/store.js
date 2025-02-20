@@ -7,7 +7,7 @@ const store = configureStore({
     thali: thaliReducer,
   },
 
-middleware : (getDefaultMiddleware)=>getDefaultMiddleware().concat(thunk),
+middleware : (getDefaultMiddleware)=>getDefaultMiddleware().concat(thunk), // redux thunk and async storage
 
 });
 

@@ -180,13 +180,13 @@ const styles = StyleSheet.create({
   },
   clearCartButton: {
     padding: 8,
-    backgroundColor: '#ff6666', 
+    backgroundColor: 'red', 
     borderRadius: 8,
   },
   trashIcon: {
     width: 24,
     height: 24,
-    tintColor: 'white',
+   // tintColor: 'white',
   },
   tableContainer: {
     marginBottom: 20,
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   paymentButton: {
-    backgroundColor: '#ff6666', 
+    backgroundColor: 'red', 
     paddingVertical: 12,
     paddingHorizontal: 30,
     borderRadius: 8,
@@ -263,11 +263,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)', // Darker overlay
+    backgroundColor: 'rgba(0, 0, 0, 0.7)', 
   },
   modalContent: {
     width: '80%',
-    backgroundColor: '#1e1e1e', // Darker modal background
+    backgroundColor: '#1e1e1e', 
     padding: 20,
     borderRadius: 10,
   },

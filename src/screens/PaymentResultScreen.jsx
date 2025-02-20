@@ -43,7 +43,7 @@ const PaymentResultScreen = () => {
       
       source={animation}
       autoPlay
-      loop  //loop 
+      loop  = {false}  
       style = {styles.animation}
       
       />
