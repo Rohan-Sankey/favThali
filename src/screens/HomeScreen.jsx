@@ -21,34 +21,57 @@ const HomeScreen = () => {
   const route = useRoute();
   const isAdmin = route.params?.isAdmin || false; 
   const auth = getAuth();
-
+  
   const [isModalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
-
-
-
+  
+  
+  
   const { cart, thaliData = [], loading, error } = useSelector(state => state.thali);
   const totalItems = cart ? Object.keys(cart).length : 0;
-
+  
   useEffect(() => {
     dispatch(fetchDishData());
     dispatch(loadCart());
   }, [dispatch]);
-
+  
   const toggleModal = () => {                                                                                       
     setModalVisible(!isModalVisible);
   };
-
-  const logOut = async ()=>{
+  
+  const logOut = async () => {
+    //  const auth = getAuth();
+    //  const user = auth.currentUser;
+    
     try {
-      await GoogleSignin.revokeAccess();
-      await GoogleSignin.signOut();
-      await signOut(auth);
-      navigation.navigate('LoginScreen')
+      const user = auth.currentUser;
+        if (user) {
+            // Check if the user signed in with Google
+            const isGoogleUser = user.providerData.some(
+                (provider) => provider.providerId === 'google.com'
+            );
+ 
+            if (isGoogleUser) {
+                // User signed in with Google
+                await GoogleSignin.revokeAccess(); // Revoke Google Access
+                await GoogleSignin.signOut(); // Sign out Google account
+                console.log('Logged out from Google account');
+            }
+ 
+            // Sign out from Firebase Authentication (for all users)
+            await signOut(auth);
+            console.log('Logged out from Firebase');
+ 
+            // Navigate to login screen
+            navigation.navigate('LoginScreen');
+        } else {
+            console.log('No user is currently logged in');
+        }
     } catch (error) {
-      console.log(error)
+        console.error(error);
+        Alert.alert('Error', error.message || 'An error occurred during logout');
     }
-  }
+};
 
   return (
     <View style={styles.container}>
