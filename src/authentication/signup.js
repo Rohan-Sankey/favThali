@@ -4,7 +4,7 @@ import {getAuth , createUserWithEmailAndPassword} from '@react-native-firebase/a
 
 
 
-export const onSignUp = (email , password) => {
+export const onSignUp = (email , password , navigation) => {
 
     const authentication = getAuth();
 

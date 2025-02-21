@@ -7,7 +7,6 @@ import {
   Image,
 } from 'react-native';
 import React, { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import {handleLogin , onGoogleButtonPress} from '../authentication/login'
 
 
