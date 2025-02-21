@@ -13,11 +13,14 @@ import { fetchDishData, loadCart } from '../redux/cartSlice';
 import BannerImage from '../components/BannerImage';
 import ThaliCard from '../components/ThaliCard';
 import ModalScreen from '../screens/ModalScreen';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { getAuth, signOut } from '@react-native-firebase/auth';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const isAdmin = route.params?.isAdmin || false; 
+  const auth = getAuth();
 
   const [isModalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
@@ -36,9 +39,22 @@ const HomeScreen = () => {
     setModalVisible(!isModalVisible);
   };
 
+  const logOut = async ()=>{
+    try {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+      await signOut(auth);
+      navigation.navigate('LoginScreen')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.topLeftIcon} onPress={logOut}>
       <Text style={styles.topLeftIcon}>{isAdmin ? "A" : "U"}</Text> 
+      </TouchableOpacity>
       <BannerImage imageSource={require('../assets/images/banner3.jpg')} />
       <View style={styles.headerRow}>
         <Text style={styles.featuredText}> { isAdmin ? "Available Data" : "Featured Thalis "}</Text>

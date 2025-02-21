@@ -6,6 +6,7 @@ import {
   TextInput,
   Alert,
   Button,
+  Image,
 } from 'react-native';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
@@ -73,8 +74,8 @@ const LoginScreen = ({ navigation }) => {
       // Navigate to the Home screen
       navigation.navigate('Home', { isAdmin: false });
     } catch (error) {
-      console.error('Google Sign-In error:', error.message);
-      Alert.alert('Google Sign-In Failed', error.message);
+     // console.error('Google Sign-In error:', error.message);
+     // Alert.alert('Google Sign-In Failed', error.message);
     }
   };
 
@@ -111,10 +112,14 @@ const LoginScreen = ({ navigation }) => {
         </Text>
       </TouchableOpacity>
 
-      <Button
-        title="Google Sign-In"
-        onPress={onGoogleButtonPress}
-      />
+      {/* Google Sign-In Button */}
+      <TouchableOpacity style={styles.googleButton} onPress={onGoogleButtonPress}>
+        <Image
+          source={require('../assets/icons/google.png')} // Add your Google logo here
+          style={styles.googleLogo}
+        />
+        <Text style={styles.googleButtonText}>Sign in with Google</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -124,7 +129,7 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1e1e1e',
+    backgroundColor: 'black',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
@@ -167,5 +172,25 @@ const styles = StyleSheet.create({
   footerLink: {
     color: '#f5cb5c',
     fontWeight: 'bold',
+  },
+  googleButton: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    paddingVertical: 12,
+    width: '90%',
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  googleLogo: {
+    width: 24,
+    height: 24,
+    marginRight: 10,
+  },
+  googleButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#1e1e1e',
   },
 });
