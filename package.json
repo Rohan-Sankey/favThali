@@ -27,6 +27,7 @@
     "react-native-app-auth": "^8.0.1",
     "react-native-gesture": "^0.2.0",
     "react-native-gesture-handler": "^2.23.1",
+    "react-native-github-login": "^0.0.1",
     "react-native-modal": "^13.0.1",
     "react-native-paper": "^5.13.1",
     "react-native-razorpay": "^2.3.0",

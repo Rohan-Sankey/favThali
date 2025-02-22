@@ -5,14 +5,45 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
+  Alert,
 } from 'react-native';
 import React, { useState } from 'react';
-import {handleLogin , onGoogleButtonPress} from '../authentication/login'
+import { authorize } from 'react-native-app-auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { handleLogin, onGoogleButtonPress } from '../authentication/login';
 
+// ✅ GitHub OAuth Configuration
+const githubConfig = {
+  clientId: 'Ov23lixmo8prD3KqNOMF',
+  clientSecret: '86aa3a5568d4283c1acb91f3ec801668077b0c86', // Only needed for server-side exchange, not on mobile
+  redirectUrl: 'https://favthali.firebaseapp.com/__/auth/handler', // Update this with your app's redirect URL
+  scopes: ['user', 'repo'], // Define the required scopes
+  serviceConfiguration: {
+    authorizationEndpoint: 'https://github.com/login/oauth/authorize',
+    tokenEndpoint: 'https://github.com/login/oauth/access_token',
+  },
+};
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  // ✅ GitHub Login Function
+  const onGithubButtonPress = async () => {
+    try {
+      const authResult = await authorize(githubConfig);
+      console.log('GitHub Login Success:', authResult);
+
+      // ✅ Store GitHub access token securely
+      await AsyncStorage.setItem('github_token', authResult.accessToken);
+
+      Alert.alert('Login Successful!', 'You are now logged in with GitHub.');
+      navigation.navigate('Home');
+    } catch (error) {
+      console.error('GitHub Login Error:', error);
+      Alert.alert('GitHub Login Failed', error.message);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -37,10 +68,10 @@ const LoginScreen = ({ navigation }) => {
         onChangeText={setPassword}
       />
 
-<TouchableOpacity style={styles.loginButton} onPress={() => handleLogin(email, password, navigation)}>
-  <Text style={styles.buttonText}>Login</Text>
-</TouchableOpacity>
-
+      {/* ✅ Login Button */}
+      <TouchableOpacity style={styles.loginButton} onPress={() => handleLogin(email, password, navigation)}>
+        <Text style={styles.buttonText}>Login</Text>
+      </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate('SignUpScreen')}>
         <Text style={styles.footerText}>
@@ -48,13 +79,16 @@ const LoginScreen = ({ navigation }) => {
         </Text>
       </TouchableOpacity>
 
-      {/* Google Sign-In Button */}
-      <TouchableOpacity style={styles.googleButton} onPress={()=>onGoogleButtonPress(navigation)}>
-        <Image
-          source={require('../assets/icons/google.png')} // Add your Google logo here
-          style={styles.googleLogo}
-        />
+      {/* ✅ Google Sign-In Button */}
+      <TouchableOpacity style={styles.googleButton} onPress={() => onGoogleButtonPress(navigation)}>
+        <Image source={require('../assets/icons/google.png')} style={styles.googleLogo} />
         <Text style={styles.googleButtonText}>Sign in with Google</Text>
+      </TouchableOpacity>
+
+      {/* ✅ GitHub Sign-In Button */}
+      <TouchableOpacity style={styles.githubButton} onPress={onGithubButtonPress}>
+        <Image source={require('../assets/icons/github.png')} style={styles.githubLogo} />
+        <Text style={styles.githubButtonText}>Sign in with GitHub</Text>
       </TouchableOpacity>
     </View>
   );
@@ -128,5 +162,25 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#1e1e1e',
+  },
+  githubButton: {
+    flexDirection: 'row',
+    backgroundColor: '#333',
+    paddingVertical: 12,
+    width: '90%',
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  githubLogo: {
+    width: 24,
+    height: 24,
+    marginRight: 10,
+  },
+  githubButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#fff',
   },
 });
