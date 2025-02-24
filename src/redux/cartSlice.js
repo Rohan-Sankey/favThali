@@ -6,7 +6,7 @@ import {act} from 'react';
 
 const URL = 'http://172.16.0.66:3000/thalis';
 
-export const fetchDishData = createAsyncThunk(
+export const fetchDishData = createAsyncThunk(   
   'dish/fetchDishData',
   async () => {
     const response = await axios.get(URL);
@@ -16,6 +16,7 @@ export const fetchDishData = createAsyncThunk(
 );
 
 export const loadCart = createAsyncThunk('dish/loadCart', async () => {
+  //to fetch cart data from AsyncStorage
   const cart = await AsyncStorage.getItem('cart');
   return cart ? JSON.parse(cart) : {};
 });
@@ -50,7 +51,7 @@ export const updateDish = createAsyncThunk(
 
 export const deleteDish = createAsyncThunk(
   'dish/deleteDish',
-  async (id, {rejectWithValue}) => {
+  async (id, {rejectWithValue}) => {  //return error or fallback mesage
     try {
       await axios.delete(`${URL}/${id}`);
       console.log(id);

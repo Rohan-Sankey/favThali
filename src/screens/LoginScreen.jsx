@@ -28,13 +28,13 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // ✅ GitHub Login Function
+  //  GitHub Login Function
   const onGithubButtonPress = async () => {
     try {
       const authResult = await authorize(githubConfig);
       console.log('GitHub Login Success:', authResult);
 
-      // ✅ Store GitHub access token securely
+      // Store GitHub access token securely
       await AsyncStorage.setItem('github_token', authResult.accessToken);
 
       Alert.alert('Login Successful!', 'You are now logged in with GitHub.');
@@ -68,7 +68,7 @@ const LoginScreen = ({ navigation }) => {
         onChangeText={setPassword}
       />
 
-      {/* ✅ Login Button */}
+      
       <TouchableOpacity style={styles.loginButton} onPress={() => handleLogin(email, password, navigation)}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
@@ -79,13 +79,13 @@ const LoginScreen = ({ navigation }) => {
         </Text>
       </TouchableOpacity>
 
-      {/* ✅ Google Sign-In Button */}
+     
       <TouchableOpacity style={styles.googleButton} onPress={() => onGoogleButtonPress(navigation)}>
         <Image source={require('../assets/icons/google.png')} style={styles.googleLogo} />
         <Text style={styles.googleButtonText}>Sign in with Google</Text>
       </TouchableOpacity>
 
-      {/* ✅ GitHub Sign-In Button */}
+      
       <TouchableOpacity style={styles.githubButton} onPress={onGithubButtonPress}>
         <Image source={require('../assets/icons/github.png')} style={styles.githubLogo} />
         <Text style={styles.githubButtonText}>Sign in with GitHub</Text>
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   },
   githubButton: {
     flexDirection: 'row',
-    backgroundColor: '#333',
+    backgroundColor: 'white',
     paddingVertical: 12,
     width: '90%',
     borderRadius: 8,
@@ -181,6 +181,6 @@ const styles = StyleSheet.create({
   githubButtonText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#fff',
+    color: 'black',
   },
 });
